@@ -50,3 +50,8 @@ P1: Full product-specific BOM/inventory/order constraints beyond aggregate-equiv
 Phase 2: Admin user/role management; node/lane/product/inventory/order editing; audit viewer; Brunel/DataCo CSV field mapping, validation and import; custom seed.
 Phase 3: Live simulation progress, saved scenario library/cloning/versioning, constrained multi-lane routing, stochastic lead-time, multi-organization workspaces.
 Refactoring: none required beyond small domain modules in initial implementation.
+
+
+## Changelog
+- 2026-06: Fixed Supabase auth — backend `.env` had a corrupted/truncated anon key (project ref `anon`). Synced the valid key; `/api/auth/status` now returns `available:true`. Real login enabled (sample workspace retained as fallback).
+- 2026-06: Readability pass — increased all small UI text in `App.css` by +2px (base body 13→15px; smallest labels 7→9px, etc.) across desktop and responsive breakpoints. No layout regressions.
