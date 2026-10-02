@@ -18,7 +18,7 @@ Use existing `frontend/.env` and `backend/.env`; do not replace platform-provide
 - Services are managed by the platform supervisor; ordinary source changes hot-reload.
 - Build: `cd frontend && yarn build`
 - Tests: `cd backend && pytest tests -v` (uses the configured external preview URL and a Mongo-backed test repository)
-- Latest testing records: `test_reports/iteration_1.json`, `test_result.md`
+- Latest testing records: `test_reports/iteration_2.json`, `test_result.md` (81 backend checks passed; desktop/mobile flows verified)
 
 ## Model boundaries
 The physical simulator uses aggregated equivalent units with 1:1 conversion, finite inventory, capacity and whole-day lead times. The product/BOM catalogue is descriptive, not a full product-level manufacturing model. All costs are INR; recovery costs are committed contracts. Results are calculated on synthetic data, not live operating forecasts.

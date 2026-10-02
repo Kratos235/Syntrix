@@ -1,0 +1,42 @@
+{
+  "summary": "Iteration-2 full regression + new coverage. Backend: 81/81 tests pass (55 preserved from iter-1 + 26 new in test_syntrix_iteration2.py). New coverage adds: (A) direct auth.current_user via httpx-mocked Supabase for missing/invalid identity, metadata missing->VIEWER, valid app_metadata ANALYST/ADMIN, user_metadata ADMIN ignored, malformed role dict/list/unknown->VIEWER, OWNER_EMAIL confirmed->ADMIN only when email_confirmed_at present, and role-change-reflected-next-call; (B) role endpoint matrix: viewer optimize/select/delete 403, viewer own-export CSV+PDF 200, analyst own optimize+select+export (CSV row 'Selected recovery plan' = plan name), cross-owner (ADMIN) optimize/select/export/delete all 404; (C) consistency: private optimize persists optimization_options, resets selected_plan on re-optimize, GET returns persisted options; sample optimize returns options in document; (D) sample report selected_plan validation: valid plan returns PDF/CSV with Content-Disposition filenames and CSV 'Selected recovery plan' row, bogus plan=422, infeasible accepted or 422, format=xml 422; (E) transport_delay propagation offsets grow with severity; canonical baseline=100 / disrupted~=92.15 / conservation=0 unchanged. Frontend STRICT viewport verification: Desktop 1920x800 and Mobile 390x844, all 9 pages (dashboard/network/simulator/impact/recovery/results/comparison/timeline/reports) show docOverflow=False with zero offending elements beyond viewport. 100-char scenario-name heading does not overflow on either viewport. Previously reported docOverflow warning (chart width/height=-1) is gone — initialDimension on ResponsiveContainer in Shared.jsx eliminates it in production path.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Dashboard, Simulator (dev build only)", "issues": ["Emergent dev-time code annotator injects <span data-ve-dynamic> inside <option> elements causing a React hydration warning in console. Non-functional, dev-only artifact. craco.config.js gates platform plugins to dev — confirmed in iteration-1. No change required."]},
+      {"screen": "Network graph pages", "issues": ["Third-party Cytoscape triggers 'custom wheel sensitivity' and Canvas2D 'willReadFrequently' browser warnings. Non-functional library noise; cannot be suppressed from app code."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_syntrix_backend.py",
+    "/app/backend/tests/test_syntrix_iteration2.py",
+    "/app/backend/tests/conftest.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "No functional fixes required. All iteration-2 asks (auth provider logic coverage, role endpoint matrix, options persistence/consistency, selected-plan report validation incl. actual byte streams, transport-delay offsets, strict 1920x800 / 390x844 overflow sweep) verified green.",
+    "External blocker unchanged: Supabase anon key still returns 401 Invalid API key from /auth/v1/settings. All provider role logic is now unit-tested via mocked httpx without touching Supabase."
+  ],
+  "critical_code_review_comments": [
+    "auth.current_user is now exhaustively covered: isinstance(role,str) + Role.__members__ guards prevent any crafted metadata from escalating. OWNER_EMAIL path requires email_confirmed_at before promotion to ADMIN. user_metadata.role is confirmed ignored.",
+    "server.optimize() resets selected_plan on every re-optimize and persists optimization_options — verified end-to-end via Mongo roundtrip and private GET. select endpoint still rejects infeasible plans (422).",
+    "sample_report validates selected_plan existence AND feasibility against freshly-computed plans; 422 on bogus id is enforced for both PDF and CSV. Content-Disposition includes filename for browser download.",
+    "engine.propagate adds origin_delay = ceil(severity/20) for transport_delay disruptions — arrival_day monotonically grows with severity, verified by TestTransportDelayPropagation. Canonical S2 100/92.15/0 regression preserved.",
+    "ScenarioRepository.get enforces owner_id scoping — any cross-owner call (even ADMIN) is 404 before any mutation can occur, including delete, confirmed via dependency-override test."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_syntrix_iteration2.py (new)"
+  ],
+  "success_rate": {"backend": "100% (81/81)", "frontend": "100% overflow-clean across 9 routes at Desktop 1920x800 and Mobile 390x844 incl. 100-char scenario-name"},
+  "test_credentials": "No real Supabase accounts used. Provider logic verified by patching auth.httpx.AsyncClient (unittest.mock.patch) to return crafted /auth/v1/user responses; role matrix verified via FastAPI dependency_overrides(current_user) + real Mongo. External blocker: anon key still 401 at Supabase.",
+  "seed_data_creation": "TEST_it2_* ScenarioDocument records inserted via dependency-override under owner_ids it2-analyst, it2-admin, it2-viewer. Scoped per owner_id; cross-test benign. No seed network modifications.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend suite split into /app/backend/tests/test_syntrix_backend.py (55 iter-1 tests) + /app/backend/tests/test_syntrix_iteration2.py (26 iter-2 tests). pytest.ini pins -n 2 --dist loadscope. Both files share one preview backend and rebind motor to module-scoped loop. Plan IDs are the short strategy keys ('supplier','inventory','rerouting','priority','combined') NOT 'plan-*' prefixed. For strict viewport sweeps use Desktop 1920x800 (NOT 1920x1080) and Mobile 390x844. docOverflow check: documentElement.scrollWidth > innerWidth+1, with offenders filtered through overflow:auto/scroll/hidden ancestors (table scrollers correctly ignored). Supabase anon key is still rejected externally — role logic must be tested only via httpx mock or dependency override.",
+  "rca of the issue": "No new issues. Pre-existing Supabase anon-key 401 remains the only external blocker; the sample workspace flow continues to serve all synthetic KPIs and the role gating is proven correct by provider-level unit tests. Transport-delay/weighted-reroute propagation and selected-plan report validation are now covered by regression tests; canonical outcomes unchanged."
+}

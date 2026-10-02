@@ -1,3 +1,7 @@
+## Final verification checkpoint
+Iteration 2: 81/81 backend tests passed; direct provider identity parsing + role endpoints + Mongo ownership + per-scenario options + report selection + propagation covered. Full workspace visual sweeps at exactly 1920x800 / 390x844 passed. PDFs rendered and viewed. No functional issues left in synthetic workspace. External Supabase public key remains rejected (401); real signup/login unverified and unavailable. See /app/test_reports/iteration_2.json and /app/memory/PRD.md.
+
+
 #====================================================================================================
 # START - Testing Protocol - DO NOT EDIT OR REMOVE THIS SECTION
 #====================================================================================================
