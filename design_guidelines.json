@@ -1,0 +1,229 @@
+{
+  "project_name": "Syntrix",
+  "app_type": "hybrid_fullstack",
+  "theme": "dark",
+  "archetype": "THE PERFORMANCE PRO & SWISS COMMAND CENTER",
+  "design_philosophy": "Tactical Minimalism & Data High-Density. Designed like a mission control deck for global multi-echelon supply networks. High visual clarity, zero decorative blur or purple gradients, sharp 1px borders, high-contrast status triggers, and graph-first interactive exploration.",
+  "tech_stack": {
+    "frontend": "React.js (.js/.jsx files)",
+    "styling": "Tailwind CSS + Custom CSS Variables + Lucide Icons / Radix UI / Phosphor Icons",
+    "network_visualization": "Cytoscape.js + react-cytoscapejs",
+    "charts": "Recharts / Custom SVG Data Visualizers",
+    "auth_and_roles": "Supabase Auth (ADMIN, ANALYST, VIEWER)"
+  },
+  "typography": {
+    "font_family_heading": "'Barlow Condensed', 'Outfit', sans-serif",
+    "font_family_body": "'Inter', 'DM Sans', sans-serif",
+    "font_family_mono": "'JetBrains Mono', 'Fira Code', monospace",
+    "scale": {
+      "h1": "text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight uppercase",
+      "h2": "text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight",
+      "h3": "text-lg sm:text-xl font-semibold tracking-normal",
+      "h4_widget": "text-xs font-mono uppercase tracking-widest text-slate-400",
+      "body": "text-sm text-slate-300 leading-relaxed",
+      "small_label": "text-xs font-mono tracking-wider uppercase text-slate-400",
+      "kpi_value": "text-2xl sm:text-3xl lg:text-4xl font-mono font-bold tracking-tight"
+    }
+  },
+  "colors": {
+    "mode": "dark",
+    "background_main": "#070B12",
+    "background_surface": "#0F172A",
+    "background_elevated": "#1E293B",
+    "background_interactive": "#334155",
+    "border_subtle": "rgba(255, 255, 255, 0.08)",
+    "border_strong": "rgba(255, 255, 255, 0.18)",
+    "accent_primary": "#F59E0B",
+    "accent_primary_hover": "#D97706",
+    "accent_secondary": "#0284C7",
+    "status_critical": "#EF4444",
+    "status_warning": "#F59E0B",
+    "status_healthy": "#10B981",
+    "status_info": "#3B82F6",
+    "text_primary": "#F8FAFC",
+    "text_secondary": "#94A3B8",
+    "text_muted": "#64748B",
+    "forbidden_colors": ["#7351B7", "#1B93A4", "purple gradients", "soft decorative blurs"]
+  },
+  "layout_and_spacing": {
+    "spacing_scale": "p-2, p-4, p-6, p-8, p-12",
+    "header_height": "h-16 (64px)",
+    "sidebar_width": "w-64 (256px) desktop, collapsible to w-16",
+    "grid_strategy": "Mode B: High Density Command Grid (grid-cols-1 md:grid-cols-3 lg:grid-cols-4 / grid-cols-12)",
+    "container_padding": "px-4 sm:px-6 lg:px-8 py-6",
+    "card_padding": "p-4 sm:p-5",
+    "card_border_radius": "rounded-sm or rounded-md (max 6px radius)"
+  },
+  "visual_enhancers": {
+    "borders": "1px solid rgba(255, 255, 255, 0.1) with sharp outer edges",
+    "shadows": "Hard tactical offset shadow: shadow-[2px_2px_0px_0px_rgba(0,0,0,0.5)] or flat border framing",
+    "grid_borders": "Subtle 1px cell grid divisions across dashboard widgets",
+    "status_indicators": "Animated pulsating dot (h-2 w-2 rounded-full) for active disruptions and real-time simulation runs",
+    "badging": "Sharp monospace pill badges with status background tints (e.g. bg-red-950/60 text-red-400 border border-red-800)"
+  },
+  "cytoscape_network_guidelines": {
+    "canvas_bg": "#090E17",
+    "node_styles": {
+      "Supplier": { "shape": "diamond", "color": "#0EA5E9", "size": 38 },
+      "Manufacturer": { "shape": "hexagon", "color": "#8B5CF6", "size": 44 },
+      "Warehouse": { "shape": "rectangle", "color": "#F59E0B", "size": 40 },
+      "Customer": { "shape": "ellipse", "color": "#10B981", "size": 36 },
+      "Disrupted": { "color": "#EF4444", "border_color": "#FF8888", "border_width": 3 }
+    },
+    "edge_styles": {
+      "default": { "line_color": "#334155", "target_arrow_color": "#334155", "width": 2 },
+      "high_flow": { "line_color": "#0284C7", "width": 4 },
+      "disrupted_lane": { "line_color": "#EF4444", "line_style": "dashed", "width": 3 }
+    },
+    "controls": "Zoom in/out, fit view, layout selector (Dagre / CoSE / Concat), node search, risk filter drawer"
+  },
+  "page_blueprints": [
+    {
+      "page_id": "login",
+      "route": "/login",
+      "title": "Authentication & Role Access",
+      "layout": "Centered mission-control card over subtle dark topological grid pattern",
+      "components": [
+        "Brand identity banner with live connection status pill",
+        "Role selector tabs (ADMIN, ANALYST, VIEWER) for demo login pre-fill",
+        "Email & Password input fields with high-contrast active ring",
+        "Role capabilities breakdown panel (describing algorithm access and edit permissions)"
+      ]
+    },
+    {
+      "page_id": "executive_dashboard",
+      "route": "/dashboard",
+      "title": "Executive Resilience Center",
+      "layout": "4-Column High Density Metric Grid top, split 8/4 grid bottom",
+      "components": [
+        "KPI Cards: Network Resilience Score (0-100), Active Disruptions Count, Estimated Revenue at Risk ($M), Mean Recovery Time (Days)",
+        "Mini Interactive Cytoscape Snapshot Widget showing top critical bottlenecks",
+        "Top 5 Critical Echelon Nodes table with risk meters and revenue weight",
+        "Live Simulation Activity Feed & Disruption Alerts stream"
+      ]
+    },
+    {
+      "page_id": "supply_network",
+      "route": "/network",
+      "title": "Interactive Multi-Echelon Network",
+      "layout": "Full-bleed workspace with sticky filter drawer on left and detail sidebar on right",
+      "components": [
+        "Cytoscape Canvas with pan/zoom/node-drag and custom layout selector",
+        "Echelon filter checkboxes (Suppliers [12], Manufacturers [4], Warehouses [5], Customers [12])",
+        "Lane flow capacity & product filter dropdowns",
+        "Node Inspector Drawer: capacity, lead time, single-point-of-failure risk flag, connected lanes"
+      ]
+    },
+    {
+      "page_id": "scenario_simulator",
+      "route": "/simulator",
+      "title": "Disruption Scenario Simulator",
+      "layout": "Split panel: Disruption Configurator (Left 4 cols) vs Impact Preview & Simulation Engine (Right 8 cols)",
+      "components": [
+        "Disruption Builder: Select target node/lane, severity %, start day, duration (days)",
+        "Pre-set Scenario Quick-load buttons (e.g., Suez Port Blockade, Tier-1 Semiconductor Shortage, Warehouse Fire)",
+        "Discrete-time Simulation Trigger (14 Graph & Simulation Algorithms engine)",
+        "Real-time propagation forecast timeline preview"
+      ]
+    },
+    {
+      "page_id": "impact_analysis",
+      "route": "/impact",
+      "title": "Ripple Effect & Criticality Analysis",
+      "layout": "3-Column layout with bottleneck tree, propagation heatmap, and financial loss chart",
+      "components": [
+        "Criticality Ranking Table (Betweenness, Downstream Impact, Hub Risk Score)",
+        "Echelon Propagation Heatmap (Day-by-day inventory deficit per customer)",
+        "Financial Exposure Breakdown by Product Line & Geographic Region"
+      ]
+    },
+    {
+      "page_id": "recovery_planner",
+      "route": "/recovery",
+      "title": "Recovery & Optimization Planner",
+      "layout": "MIP & Min-Cost Flow Parameter Workbench top, Strategy Recommendation Cards bottom",
+      "components": [
+        "Optimization Constraints Form: Max budget cap, air-freight vs sea-freight toggles, lead time tolerance",
+        "Generated Recovery Strategy Cards (e.g., Primary Strategy: Reroute via Secondary Warehouse, Backup Strategy: Supplier Dual-Sourcing)",
+        "Cost vs Time tradeoff curve visualizer",
+        "Action Plan Execution Checklist for Operations"
+      ]
+    },
+    {
+      "page_id": "optimization_results",
+      "route": "/optimization-results",
+      "title": "Optimization Algorithm Output",
+      "layout": "Comparative Data Table & Dual-Axis Cost-Service Level Chart",
+      "components": [
+        "Min-Cost Flow execution logs and solver convergence metric",
+        "Re-allocated Lane Capacities vs Baseline Comparison Table",
+        "Unmet Demand Reduction metrics and margin impact analysis"
+      ]
+    },
+    {
+      "page_id": "scenario_comparison",
+      "route": "/scenario-comparison",
+      "title": "Multi-Scenario Tradeoff Matrix",
+      "layout": "Side-by-side multi-card column comparison (Baseline vs Scenario A vs Scenario B)",
+      "components": [
+        "Scenario Selector checklist (up to 3 concurrent scenarios)",
+        "Side-by-side KPI comparison cards (Resilience %, Cost Delta $, Days to Recovery)",
+        "Overlay Line Chart comparing cumulative revenue loss across scenarios"
+      ]
+    },
+    {
+      "page_id": "simulation_timeline",
+      "route": "/timeline",
+      "title": "Discrete-Time Day-by-Day Playback",
+      "layout": "Interactive Day Scrubber Header (Day 1 to 90) + Dynamic Network State Canvas",
+      "components": [
+        "Time Play/Pause/Scrub bar with speed control (1x, 2x, 5x)",
+        "Day-by-Day Inventory Depletion graph with buffer stock threshold lines",
+        "Active disruption lifecycle status indicators"
+      ]
+    },
+    {
+      "page_id": "reports",
+      "route": "/reports",
+      "title": "Executive Resilience & Audit Reports",
+      "layout": "Document preview with export panel and audit log trail",
+      "components": [
+        "One-click PDF/CSV Export buttons for Executive Board & Supply Chain Managers",
+        "Algorithmic Audit Log (tracking user role, parameters used, simulation run timestamp)",
+        "Executive Summary Template Generator"
+      ]
+    }
+  ],
+  "mobile_adaptation": {
+    "strategy": "Responsive command bar & stacked modular widgets",
+    "navigation": "Slide-out mobile navigation drawer with role indicator",
+    "cytoscape_touch": "Touch drag enabled, pinch-to-zoom, simplified node labels on screen width < 768px",
+    "tables": "Horizontal scroll wrappers with sticky left column for node/scenario identifiers"
+  },
+  "testing_and_data_attributes": {
+    "rule": "All interactive elements (buttons, inputs, filters, tabs, cytoscape control buttons, role selectors) must have distinct data-testid attributes",
+    "examples": [
+      "data-testid=\"login-email-input\"",
+      "data-testid=\"login-submit-button\"",
+      "data-testid=\"role-selector-admin\"",
+      "data-testid=\"nav-link-supply-network\"",
+      "data-testid=\"cytoscape-reset-view-button\"",
+      "data-testid=\"run-simulation-button\"",
+      "data-testid=\"export-report-pdf-button\""
+    ]
+  },
+  "image_urls": {
+    "login_hero_bg": "https://images.unsplash.com/photo-1678182451047-196f22a4143e?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "port_overview": "https://images.unsplash.com/photo-1670121180530-cfcba4438038?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "cargo_vessel": "https://images.unsplash.com/photo-1670121180583-39ab653a071c?crop=entropy&cs=srgb&fm=jpg&q=85"
+  },
+  "instructions_to_main_agent": [
+    "Strictly follow the dark command-center aesthetic with #070B12 background and #0F172A surfaces.",
+    "Use Amber (#F59E0B) as the singular high-visibility primary accent color.",
+    "Do NOT introduce purple gradients, cyan glow, or soft decorative shadows.",
+    "Ensure Cytoscape network is fully interactive with custom node styles matching echelon types.",
+    "Include synthetic data covering 12 suppliers, 4 manufacturers, 5 warehouses, 12 customers, ~30 lanes, ~24 products.",
+    "Ensure Supabase Auth handles ADMIN, ANALYST, VIEWER roles gracefully.",
+    "Attach data-testid attributes to all key inputs, action buttons, and navigation elements."
+  ]
+}
