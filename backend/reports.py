@@ -12,6 +12,8 @@ def export_csv(scenario):
     writer = csv.writer(stream)
     writer.writerow(['Syntrix scenario report', safe_cell(scenario['config']['name'])])
     writer.writerow(['Model', 'Synthetic data; aggregate equivalent units; currency INR'])
+    selected = next((p['name'] for p in scenario['plans'] if p['id'] == scenario.get('selected_plan')), 'Not selected')
+    writer.writerow(['Selected recovery plan', selected])
     writer.writerow(['Strategy', 'Service level %', 'Unmet demand', 'Recovery days', 'Recovery cost INR', 'Feasible'])
     rows = [('Undisrupted baseline', scenario['baseline']['kpis'], True), ('Disrupted baseline', scenario['disrupted']['kpis'], True)]
     rows += [(p['name'], p['result']['kpis'], p['feasibility']['feasible']) for p in scenario['plans']]
@@ -40,6 +42,9 @@ def export_pdf(scenario):
              Paragraph(f"Synthetic network | {scenario['config']['horizon']}-day horizon | All costs in INR", styles['Caption2'])]
     for d in scenario['config']['disruptions']:
         story.append(Paragraph(f"{escape(d['type'].replace('_', ' ').title())}: {escape(d['target'])}, day {d['start_day']}, {d['duration']} days, {d['severity']}% severity.", styles['BodyText']))
+    selected = next((p['name'] for p in scenario['plans'] if p['id'] == scenario.get('selected_plan')), None)
+    if selected:
+        story.extend([Spacer(1, 4*mm), Paragraph('Selected recovery plan: ' + escape(selected), styles['BodyText'])])
     story.extend([Spacer(1, 8*mm), Paragraph('Executive outcomes', styles['Heading2'])])
     data = [['Strategy', 'Service', 'Unmet units', 'Recovery', 'Cost (INR)']]
     rows = [('Undisrupted', scenario['baseline']['kpis']), ('Disrupted baseline', scenario['disrupted']['kpis'])]

@@ -24,8 +24,21 @@ Build a supply chain resilience and recovery platform using graph algorithms, co
 - Public synthetic endpoints never query private scenarios. Signed-in scenario queries include verified owner_id.
 - Engine uses aggregated equivalent units; product/BOM catalogue is descriptive, not a multi-SKU production optimizer. Explicitly disclose this modelling limitation in UI/reports.
 
-## In progress
-All Phase 1 implementation and tests.
+## Implemented and verified — 2026-10-02 preview environment date
+- All 10 pages: login, dashboard, Cytoscape network, multi-event simulator, impact, recovery, optimization results, comparison, daily timeline, reports. Dark default and light toggle; 390px mobile navigation.
+- Real deterministic aggregate engine with all 14 algorithm stages. Canonical baseline 100% service; S2 failure 92.15%; recovery trade-offs computed via real OR-Tools and NetworkX algorithms.
+- Private Mongo scenario persistence, role-based action authorization and owner-scoped queries; public synthetic computation completely separated from private records.
+- ReportLab PDF and CSV exports. Real PDF endpoints rendered and visually inspected, no blank/overflow pages. Selected plan is included.
+- First testing pass: 55/55 backend tests, 10 scenario regressions, role matrix via isolated test overrides, public APIs and frontend flow smoke. Initial main screenshots correct 1920x800 and 390x844 without overflow. Live Supabase auth remains untestable due rejected public key.
+- Post-test fixes: per-scenario budget/policy/strategies preserved for exports; selected plan preserved through scenario switching; baseline timeline no disruption highlighting; chart first-layout dimensions; malformed trusted role defaults to VIEWER. Final targeted regression pending.
+- Production frontend build passes. README and docs/ARCHITECTURE.md cover model, schema, API, tests and limitations.
+
+## Scope differences from the original full plan
+- Mongo application storage rather than Supabase Postgres/RLS (platform constraint, disclosed). Auth identity remains Supabase.
+- Physical engine is aggregate-equivalent rather than product/BOM-specific; no claim of complete multi-SKU optimizer.
+- Per-user private scenarios, not shared organization collaboration. Short simulations execute in a worker thread with a busy indicator, not a persisted background-job queue.
+- Live auth / real owner and analyst sessions need a valid Supabase key. No role accounts/passwords were seeded, no identity bypass.
+- Dataset import/mappings, advanced KPIs (utilization/agility), admin audit viewer, live progress and richer product constraints remain future work.
 
 ## Backlog
 P0: Valid Supabase public key needed; then verify real sign-in, signup/email confirmation, owner access.

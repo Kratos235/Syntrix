@@ -56,6 +56,7 @@ export const WorkspaceProvider = ({ children }) => {
   async function selectPlan(planId) {
     if (user && scenario.owner_id !== 'sample') await request(`/scenarios/${scenario.id}/select`, { method: 'POST', body: { plan_id: planId } });
     setScenario(old => ({ ...old, selected_plan: planId }));
+    setScenarios(old => old.map(item => item.id === scenario.id ? { ...item, selected_plan: planId } : item));
     toast.success('Recovery plan selected');
   }
   async function signOut() {

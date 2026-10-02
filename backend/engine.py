@@ -69,17 +69,24 @@ def validate_scenario(network, scenario):
 # 02. Downstream traversal and shortest cumulative lead-time propagation.
 def propagate(network, scenario):
     graph = graph_for(network)
+    for disruption in scenario.disruptions:
+        if disruption.type == 'transport_delay':
+            for _, _, edge in graph.edges(data=True):
+                if edge['id'] == disruption.target:
+                    edge['lead_time'] += math.ceil(disruption.severity / 20)
+                    edge['weight'] = edge['cost'] + edge['lead_time'] * 10
     affected, origins, paths = set(), set(), []
     lane_map = {l.id: l for l in network.lanes}
     for disruption in scenario.disruptions:
         if disruption.severity == 0:
             continue
         origin = lane_map[disruption.target].target if disruption.target in lane_map else disruption.target
+        origin_delay = math.ceil(disruption.severity / 20) if disruption.type == 'transport_delay' else 0
         origins.add(origin)
         lengths, routes = nx.single_source_dijkstra(graph, origin, weight='lead_time')
         for node_id, delay in lengths.items():
             affected.add(node_id)
-            paths.append({'node': node_id, 'origin': origin, 'arrival_day': disruption.start_day+delay, 'path': routes[node_id]})
+            paths.append({'node': node_id, 'origin': origin, 'arrival_day': disruption.start_day+origin_delay+delay, 'path': routes[node_id]})
     customers = [n for n in network.nodes if n.id in affected and n.type == 'customer']
     return {'affected_nodes': sorted(affected), 'origins': sorted(origins), 'paths': paths,
             'affected_customers': len(customers), 'daily_demand_exposed': sum(n.daily_demand for n in customers),
@@ -217,6 +224,12 @@ def inventory_flow(network, scenario, budget):
 # 07. Disruption-aware weighted shortest paths, no invented physical routes.
 def reroute(network, scenario, budget):
     graph = graph_for(network, True)
+    for disruption in scenario.disruptions:
+        for source, target, edge in graph.edges(data=True):
+            if disruption.type == 'transport_delay' and edge['id'] == disruption.target:
+                edge['weight'] += math.ceil(disruption.severity / 20) * 10
+            elif disruption.type not in ('demand_surge', 'transport_delay') and (source == disruption.target or edge['id'] == disruption.target) and disruption.severity < 100:
+                edge['weight'] /= max(.01, 1 - disruption.severity / 100)
     blocked = {d.target for d in scenario.disruptions if d.severity == 100 and d.type not in ('demand_surge', 'transport_delay')}
     for node_id in list(graph.nodes):
         if node_id in blocked:

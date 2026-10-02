@@ -22,7 +22,7 @@ async def current_user(credentials: HTTPAuthorizationCredentials | None = Depend
         if not user.get('id'):
             raise HTTPException(401, 'Invalid identity')
         role = (user.get('app_metadata') or {}).get('role', 'VIEWER')
-        if role not in Role.__members__:
+        if not isinstance(role, str) or role not in Role.__members__:
             role = 'VIEWER'
         if user.get('email_confirmed_at') and user.get('email', '').lower() == os.environ['OWNER_EMAIL'].lower():
             role = 'ADMIN'

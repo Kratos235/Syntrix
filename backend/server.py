@@ -27,6 +27,7 @@ def compute(config, options=None):
         data = run_scenario(network, config)
         if options:
             data['plans'] = generate_strategies(network, config, options)
+            data['optimization_options'] = options
         return data
     except ValueError as exc:
         raise HTTPException(422, str(exc))
@@ -127,6 +128,7 @@ async def optimize(scenario_id: str, options: OptimizationInput, user=Depends(re
     repo = ScenarioRepository(user)
     scenario = await repo.get(scenario_id)
     scenario.plans = await run_in_threadpool(generate_strategies, network, scenario.config, options)
+    scenario.optimization_options = options
     scenario.selected_plan = None
     await repo.save(scenario)
     return scenario.model_dump()
@@ -159,6 +161,11 @@ def report_response(data, format):
 @api.post('/sample/report/{format}')
 async def sample_report(format: str, body: SampleOptimize):
     data = await run_in_threadpool(compute, body.scenario, body.options)
+    if body.selected_plan:
+        chosen = next((p for p in data['plans'] if p['id'] == body.selected_plan and p['feasibility']['feasible']), None)
+        if not chosen:
+            raise HTTPException(422, 'Selected plan is not available in this report')
+        data['selected_plan'] = body.selected_plan
     return await run_in_threadpool(report_response, data, format)
 
 

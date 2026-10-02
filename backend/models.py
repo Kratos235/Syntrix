@@ -100,6 +100,7 @@ class OptimizationInput(BaseModel):
 class SampleOptimize(BaseModel):
     scenario: ScenarioInput
     options: OptimizationInput = Field(default_factory=OptimizationInput)
+    selected_plan: str | None = None
 
 
 class ScenarioDocument(BaseDocument):
@@ -109,6 +110,7 @@ class ScenarioDocument(BaseDocument):
     baseline: dict
     disrupted: dict
     plans: list[dict] = Field(default_factory=list)
+    optimization_options: OptimizationInput | None = None
     selected_plan: str | None = None
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 

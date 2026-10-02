@@ -112,3 +112,13 @@
 - PDF report generated end-to-end and rendered to two PNG pages for visual verification. Frontend production build passes.
 - Need testing agent: comprehensive algorithm unit tests and 10 deterministic scenarios, role matrix with test-only mocked provider/overrides, real public APIs, all page flows, export downloads, 1920x800 and 390x844 responsive overflow. Use memory/test_credentials.md; no real login possible until valid Supabase key.
 - All tests currently need_retesting=true. No existing tests beyond boilerplate.
+
+
+## Post-test consistency fixes for targeted regression
+- iteration_1: 55 backend tests passed; core frontend smoke passed. Auth provider key still invalid.
+- ScenarioDocument stores optimization_options; optimizers preserve exact budget/policy/strategies. Report UI uses scenario options rather than latest workspace options.
+- Plan selection updates current scenario and chooser list. CSV/PDF include selected recovery plan; sample report validates feasibility. Export PDF regenerated, both pages visually inspected.
+- Timeline baseline graph suppresses disruptions; ResponsiveContainer initial dimensions avoid initial chart-size warning.
+- Auth non-string app_metadata.role defaults VIEWER. Need direct mocked provider identity extraction tests; previous role overrides bypassed that function.
+- Rerouting weights account for transport delays/partial capacity, propagation includes origin-lane delay.
+- Targeted visual testing only desktop1920x800/mobile390x844; iteration_1 desktop1920x1080 must not count. Main original smoke correct1920x800/390x844 no overflow.
